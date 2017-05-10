@@ -38,9 +38,25 @@ var familyTree = {
   }]
 };
 
-var livesInMountainView = function (familyMember) {
+const livesInMountainView = function(familyMember) {
   return familyMember.location === 'Mountain View';
-}
+};
 //
 // filterFamilyMembers(familyTree, livesInMountainView)
 // returns ['Brendan Eich', 'Mocha', 'LiveScript', 'JavaScript'];
+
+const filterFamilyMembers = (familyTree, filter) => {
+  const results = [];
+  (function searchFamilyTree(descendant) {
+    if (filter(descendant)) {
+      results.push(descendant.firstName + ' ' + descendant.lastName);
+    }
+    for (let child of descendant.children) {
+      searchFamilyTree(child);
+    }
+  })(familyTree, livesInMountainView);
+  
+  return results;
+};
+
+filterFamilyMembers(familyTree, livesInMountainView);
